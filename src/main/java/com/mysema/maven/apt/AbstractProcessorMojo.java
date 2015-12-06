@@ -5,11 +5,6 @@
  */
 package com.mysema.maven.apt;
 
-import javax.tools.JavaCompiler;
-import javax.tools.JavaCompiler.CompilationTask;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -18,12 +13,19 @@ import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import javax.tools.JavaCompiler;
+import javax.tools.JavaCompiler.CompilationTask;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.ToolProvider;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.Scanner;
 import org.codehaus.plexus.util.StringUtils;
@@ -40,14 +42,10 @@ public abstract class AbstractProcessorMojo extends AbstractMojo {
     private static final String JAVA_FILE_FILTER = "/*.java";
     private static final String[] ALL_JAVA_FILES_FILTER = new String[] { "**" + JAVA_FILE_FILTER };
 
-    /**
-     * @component
-     */
+    @Component
     private BuildContext buildContext;
 
-    /**
-     * @parameter expression="${project}" readonly=true required=true
-     */
+    @Parameter(defaultValue="${project}", readonly = true, required=true)
     private MavenProject project;
 
     /**
@@ -58,6 +56,7 @@ public abstract class AbstractProcessorMojo extends AbstractMojo {
     /**
      * @parameter
      */
+    @Parameter(property = "processor")
     private String processor;
 
     /**

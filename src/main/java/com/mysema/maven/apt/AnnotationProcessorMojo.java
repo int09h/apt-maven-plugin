@@ -7,19 +7,17 @@ package com.mysema.maven.apt;
 
 import java.io.File;
 
-/**
- * AnnotationProcessorMojo calls APT processors for code generation
- * 
- * @goal process
- * @phase generate-sources
- * @requiresDependencyResolution compile
- * @threadSafe true
- */
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+
+@Mojo(name="process", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class AnnotationProcessorMojo extends AbstractProcessorMojo {
 
     /**
      * @parameter
      */
+    @Parameter(property = "outputDirectory")
     private File outputDirectory;
 
     @Override
